@@ -1,7 +1,14 @@
 import React from 'react';
+import { API_BASE_URL } from '../../services/inventoryApi';
 
 const InventoryDetails = ({ item }) => {
   if (!item) return <div className="text-center p-10">Item not found.</div>;
+
+  const getImageUrl = (url) => {
+    if (!url) return 'https://via.placeholder.com/300?text=No+Image';
+    if (url.startsWith('http')) return url;
+    return `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+  };
 
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -9,7 +16,7 @@ const InventoryDetails = ({ item }) => {
         <div className="md:flex-shrink-0">
           <img
             className="h-64 w-full object-cover md:w-64"
-            src={item.photo_url || 'https://via.placeholder.com/300'}
+            src={getImageUrl(item.photo_url)}
             alt={item.inventory_name}
           />
         </div>

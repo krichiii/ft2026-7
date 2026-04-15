@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../../store/InventoryContext';
 import ConfirmModal from './ConfirmModal';
+import { API_BASE_URL } from '../../services/inventoryApi';
 
 const InventoryTable = () => {
   const { inventory, loading, error, deleteInventoryItem } = useInventory();
   const [deleteId, setDeleteId] = useState(null);
+
+  const getImageUrl = (url) => {
+    if (!url) return 'https://via.placeholder.com/50?text=No+Image';
+    if (url.startsWith('http')) return url;
+    return `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+  };
 
   const handleDeleteClick = (id) => {
     setDeleteId(id);
@@ -38,7 +45,7 @@ const InventoryTable = () => {
             <tr key={item.id} className="hover:bg-gray-50 transition">
               <td className="px-6 py-4 whitespace-nowrap">
                 <img
-                  src={item.photo_url || 'https://via.placeholder.com/50'}
+                  src={getImageUrl(item.photo_url)}
                   alt={item.inventory_name}
                   className="w-12 h-12 object-cover rounded"
                 />
